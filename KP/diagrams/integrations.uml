@@ -1,0 +1,22 @@
+@startuml
+package "External Services" {
+    class "Third-Party API" {
+        + getTeamDetails()
+        + getMatchResults()
+    }
+}
+
+package "System" {
+    class "FastAPI Backend" {
+        + fetchTeams()
+        + fetchMatches()
+    }
+    class "PostgreSQL DB" {
+        + storeTeams()
+        + storeMatches()
+    }
+}
+
+"Third-Party API" --> "FastAPI Backend" : "REST API Calls"
+"FastAPI Backend" --> "PostgreSQL DB" : "SQL Queries"
+@enduml

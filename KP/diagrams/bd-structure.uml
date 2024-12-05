@@ -1,0 +1,73 @@
+@startuml
+entity "Users" as Users {
+    * user_id: SERIAL [PK]
+    ---
+    username: VARCHAR(100)
+    email: VARCHAR(100)
+    hashed_password: VARCHAR(255)
+    user_type: VARCHAR(50)
+    created_date: TIMESTAMP
+}
+
+entity "Teams" as Teams {
+    * team_id: SERIAL [PK]
+    ---
+    team_name: VARCHAR(100)
+    captain_id: INT [FK -> Users.user_id]
+    created_date: TIMESTAMP
+}
+
+entity "Team Members" as TeamMembers {
+    * member_id: SERIAL [PK]
+    ---
+    team_id: INT [FK -> Teams.team_id]
+    user_id: INT [FK -> Users.user_id]
+    joined_date: TIMESTAMP
+}
+
+entity "Tournaments" as Tournaments {
+    * tournament_id: SERIAL [PK]
+    ---
+    tournament_name: VARCHAR(150)
+    organizer_id: INT [FK -> Users.user_id]
+    start_date: DATE
+    end_date: DATE
+    status: VARCHAR(50)
+}
+
+entity "Matches" as Matches {
+    * match_id: SERIAL [PK]
+    ---
+    tournament_id: INT [FK -> Tournaments.tournament_id]
+    team1_id: INT [FK -> Teams.team_id]
+    team2_id: INT [FK -> Teams.team_id]
+    match_date: TIMESTAMP
+    winner_team_id: INT [FK -> Teams.team_id]
+    score: VARCHAR(20)
+}
+
+entity "Schedule" as Schedule {
+    * schedule_id: SERIAL [PK]
+    ---
+    tournament_id: INT [FK -> Tournaments.tournament_id]
+    match_id: INT [FK -> Matches.match_id]
+    location: VARCHAR(255)
+}
+
+entity "Tournament Bracket" as TournamentBracket {
+    * bracket_id: SERIAL [PK]
+    ---
+    tournament_id: INT [FK -> Tournaments.tournament_id]
+    match_id: INT [FK -> Matches.match_id]
+    stage: VARCHAR(50)
+}
+
+Users ||--o{ Teams : "is captain of"
+Users ||--o{ TeamMembers : "is a member of"
+Teams ||--o{ TeamMembers : "has members"
+Users ||--o{ Tournaments : "organizes"
+Tournaments ||--o{ Matches : "has matches"
+Matches ||--o{ Schedule : "is scheduled"
+Tournaments ||--o{ TournamentBracket : "is in bracket"
+Matches ||--o{ TournamentBracket : "is part of"
+@enduml

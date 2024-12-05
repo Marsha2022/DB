@@ -1,0 +1,17 @@
+digraph UserModel {
+    rankdir=LR;
+    node [shape=ellipse, fontname="Arial"];
+
+    Admin [label="Администратор", shape=box, style=filled, color=lightblue];
+    Organizer [label="Организатор", shape=box, style=filled, color=lightgreen];
+    Participant [label="Участник", shape=box, style=filled, color=lightyellow];
+    Tournament [label="Турнир", shape=ellipse, style=filled, color=lightgrey];
+
+    Admin -> Organizer [label="Управляет"];
+    Admin -> Participant [label="Добавляет/Удаляет"];
+    Organizer -> Tournament [label="Создаёт"];
+    Organizer -> Participant [label="Приглашает"];
+    Participant -> Tournament [label="Участвует"];
+    Participant -> Tournament [label="Просматривает", dir=none];
+    Organizer -> Tournament [label="Управляет"];
+}

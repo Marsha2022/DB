@@ -1,0 +1,19 @@
+@startuml
+cloud "Internet" {
+    package "External Network" {
+        node "Users" {
+            [Browser / Mobile App]
+        }
+    }
+}
+
+package "Local Network" {
+    node "Server" {
+        [FastAPI Backend]
+        [PostgreSQL DB]
+    }
+}
+
+"Users" --> "FastAPI Backend" : "HTTPS Requests"
+"FastAPI Backend" --> "PostgreSQL DB" : "Database Connection"
+@enduml
